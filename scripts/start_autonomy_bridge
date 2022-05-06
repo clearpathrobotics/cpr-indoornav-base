@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [ -z "$ROS2_DISTRO" ];
+then
+  ROS2_DISTRO="foxy"
+fi
+
+# We expect the ROS1 Bridge to exist in a separate workspace, so accept an argument for its path
+BRIDGE_SETUP_PATH=$1
+
+# load the ROS1 environment
+source /etc/ros/setup.bash
+
+# load the topic parameters into the rosparam server
+roslaunch --wait cpr_indoornav_base load_autonomy_params.launch
+
+# load the ROS2 environment
+source /opt/ros/${ROS2_DISTRO}/setup.bash
+if ! [ -z "$BRIDGE_SETUP_PATH" ];
+then
+  source $BRIDGE_SETUP_PATH
+fi
+
+# set the ROS2 domain, other necessary envars for the Otto 100 base
+export ROS_DOMAIN_ID=95
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+export CYCLONEDDS_URI=file://$(catkin_find cpr_indoornav_base config/cyclone_dds.xml --first-only)
+
+# start the bridge for this domain
+ros2 run ros1_bridge parameter_bridge __name:=autonomy_bridge __node:=autonomy_bridge __ns:=autonomy_api

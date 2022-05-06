@@ -1,0 +1,64 @@
+#!/bin/bash
+# Configures apache2 to enable the proxy server to the web GUI
+
+REMOTE_HOST=10.252.252.1
+
+sudo a2enmod proxy
+sudo a2enmod proxy_http
+sudo a2enmod proxy_wstunnel
+sudo a2enmod rewrite
+
+cat <<EOF | sudo tee /etc/apache2/conf-enabled/clearpath.conf
+Listen 2000
+Listen 2001
+Listen 5000
+Listen 9091
+
+<VirtualHost *:2000>
+ProxyRequests On
+ProxyVia On
+
+ProxyPass / http://${REMOTE_HOST}:2000/
+ProxyPassReverse / http://${REMOTE_HOST}:2000/
+</VirtualHost>
+
+<VirtualHost *:2001>
+ServerName $(hostname)
+
+RewriteEngine On
+
+RewriteCond %{HTTP:Upgrade} =websocket [NC]
+RewriteRule /(.*)           ws://${REMOTE_HOST}:2001/$1 [P,L]
+
+RewriteCond %{HTTP:Upgrade} !=websocket [NC]
+RewriteRule /(.*)           ws://${REMOTE_HOST}:2001/$1 [P,L]
+
+ProxyPass / http://${REMOTE_HOST}:2001/
+ProxyPassReverse / http://${REMOTE_HOST}:2001/
+</VirtualHost>
+
+<VirtualHost *:5000>
+ProxyRequests On
+ProxyVia On
+
+ProxyPass / http://${REMOTE_HOST}:5000/
+ProxyPassReverse / http://${REMOTE_HOST}:5000/
+</VirtualHost>
+
+<VirtualHost *:9091>
+ServerName $(hostname)
+
+RewriteEngine On
+
+RewriteCond %{HTTP:Upgrade} =websocket [NC]
+RewriteRule /(.*)           ws://${REMOTE_HOST}:9091/$1 [P,L]
+
+RewriteCond %{HTTP:Upgrade} !=websocket [NC]
+RewriteRule /(.*)           ws://${REMOTE_HOST}:9091/$1 [P,L]
+
+ProxyPass / http://${REMOTE_HOST}:9091/
+ProxyPassReverse / http://${REMOTE_HOST}:9091/
+</VirtualHost>
+EOF
+
+sudo systemctl restart apache2

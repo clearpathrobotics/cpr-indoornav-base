@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<launch>
+  <arg name="bridge_setup_path" default="$(env HOME)/bridge_ws/install/local_setup.bash" />
+
+  <node pkg="cpr_indoornav_base" type="start_autonomy_bridge" name="indoornav_autonomy_bridge_node" args="$(arg bridge_setup_path)" />
+  <node pkg="cpr_indoornav_base" type="start_fleet_bridge" name="indoornav_fleet_bridge_node" args="$(arg bridge_setup_path)" />
+</launch>

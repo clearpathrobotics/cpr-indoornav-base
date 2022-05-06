@@ -1,0 +1,18 @@
+#!/bin/bash
+# Installs additional dependencies needed by cpr_indoornav_base
+
+# Needed to configure the proxy server to provide access to the web gui
+sudo apt-get install -y apache2
+
+# by default we assume we're using Foxy because it's the LTS release
+# but Galactic works too and may have some advantages
+if [ -z "$ROS2_DISTRO" ];
+then
+  export ROS2_DISTRO="foxy"
+fi
+
+# Install ROS2 dependencies
+# Eventually we want these resolved as part of the main package dependencies
+# but that requires a fix on the build-farm
+# For now, just install them manually
+sudo apt-get install ros-$ROS2_DISTRO-ros-base ros-$ROS2_DISTRO-ros1-bridge ros-$ROS2_DISTRO-rmw-cyclonedds-cpp

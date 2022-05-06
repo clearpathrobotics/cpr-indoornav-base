@@ -1,0 +1,236 @@
+fleet_api:
+# ROS_DOMAIN_ID=100
+  topics:
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/appliance/read
+      type: appliance_control_msgs/msg/DirectRead
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/appliance/write_request
+      type: appliance_control_msgs/msg/DirectWrite
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/appliance/write_response
+      type: appliance_control_msgs/msg/DirectWrite
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/blackboard_communication/downlink
+      type: perception_navigation_msgs/msg/BlackBoardAction
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/blackboard_communication/uplink
+      type: perception_navigation_msgs/msg/BlackBoardAction
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/bms/battery_status
+      type: sensor_msgs/msg/BatteryState
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/clouds/scan_points
+      type: geometry_extra_msgs/msg/PointVectorVector
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/configuration/fleet_manager_system_id
+      type: configuration_msgs/msg/SystemId
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/configuration/info
+      type: configuration_msgs/msg/ConfigurationStatus
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/configuration/properties
+      type: configuration_msgs/msg/RobotPropertyArray
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/configuration/state
+      type: std_msgs/msg/String
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/configuration/system_id
+      type: configuration_msgs/msg/SystemId
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/control_selection/control_state
+      type: command_control_msgs/msg/ControlSelectionState
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/diagnostics/diagnostics_aggregated
+      type: diagnostic_msgs/msg/DiagnosticArray
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/diagnostics/diagnostics_filtered
+      type: diagnostic_msgs/msg/DiagnosticArray
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/diagnostics/snapshot_status
+      type: diagnostic_extra_msgs/msg/SnapshotInfoArray
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/maintenance/update_status
+      type: maintenance_msgs/msg/UpdateStatus
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/map_data/fleet_core_map_md5sum
+      type: std_msgs/msg/String
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/map_data/robot_active_map
+      type: std_msgs/msg/String
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/mission/current_job_id
+      type: std_msgs/msg/String
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/move_base/blocking_points
+      type: geometry_extra_msgs/msg/StampedPoint2DLeanVector
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/move_base/curr_footprint_mode
+      type: std_msgs/msg/String
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/move_base/curr_footprint_set
+      type: std_msgs/msg/String
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/navigation/active_autonomy_data
+      type: perception_navigation_msgs/msg/ActiveAutonomyData
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/navigation/collaboration_downlink
+      type: perception_navigation_msgs/msg/CollaborationList
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/navigation/collaboration_uplink
+      type: perception_navigation_msgs/msg/CollaborationList
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/navigation/distance_to_goal
+      type: perception_navigation_msgs/msg/DistanceToGoal
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/navigation/farsight_active_autonomy_data
+      type: perception_navigation_msgs/msg/FarsightAutonomyData
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/navigation/farsight_footprints
+      type: perception_navigation_msgs/msg/FarsightFootprintLists
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/navigation/farsight_reset_latched_cache
+      type: std_msgs/msg/Empty
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/navigation/farsight_uplink
+      type: perception_navigation_msgs/msg/FarsightList2
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/navigation/footprints_robots
+      type: perception_navigation_msgs/msg/FootprintArray
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/navigation/monitored_zones
+      type: geometry_extra_msgs/msg/GeometryArray
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/navigation/motion_state
+      type: perception_navigation_msgs/msg/MotionState
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/navigation/path_2d
+      type: geometry_extra_msgs/msg/Pose2DArray
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/navigation/state
+      type: perception_navigation_msgs/msg/RobotState
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/onboard_systems/wireless_connection
+      type: onboard_systems_msgs/msg/WirelessConnection
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/robot_insight/footprints_atlas
+      type: perception_navigation_msgs/msg/FootprintArray
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/slam/localization_status
+      type: perception_navigation_msgs/msg/LocalizationStatus
+      queue_size: 1
+    -
+      topic: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/slam/scan_points
+      type: geometry_extra_msgs/msg/PointVectorVector
+      queue_size: 1
+    -
+      topic: /$(env HOSTNAME_ROS_SANITIZED)/clearpath_api/info
+      type: clearpath_api/msg/ApiInfo
+      queue_size: 1
+
+  services_1_to_2: []
+  services_2_to_1:
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/configuration/activate_configuration
+      type: std_srvs/srv/Trigger
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/configuration/list_candidate_configurations
+      type: configuration_msgs/srv/ListCandidateConfigurations
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/configuration/override
+      type: configuration_msgs/srv/SetOverride
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/configuration/set_default
+      type: std_srvs/srv/Trigger
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/configuration/set_developer_mode
+      type: std_srvs/srv/SetBool
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/control_selection/autonomy_pause
+      type: std_extra_srvs/srv/String
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/control_selection/autonomy_resume
+      type: std_extra_srvs/srv/String
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/control_selection/set_fallback_recipe
+      type: command_control_msgs/srv/FallbackRecipe
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/control_selection/set_mode
+      type: command_control_msgs/srv/SetNavigationMode
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/control_selection/strategy_management_pause
+      type: command_control_msgs/srv/PauseControl
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/control_selection/strategy_management_resume
+      type: command_control_msgs/srv/PauseControl
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/diagnostics/cancel_manual_snapshot
+      type: diagnostic_extra_msgs/srv/CancelManualSnapshot
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/diagnostics/get_bag_status
+      type: diagnostic_extra_msgs/srv/BagUploadStatus
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/diagnostics/manual_snapshot
+      type: diagnostic_extra_msgs/srv/ManualSnapshot
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/maintenance/install_update
+      type: maintenance_msgs/srv/InstallUpdate
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/map_data/get_map_info
+      type: perception_navigation_msgs/srv/MapInfo
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/map_data/list_maps
+      type: perception_navigation_msgs/srv/ListMaps
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/map_data/load_map_from_disk
+      type: perception_navigation_msgs/srv/LoadMapFromDisk
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/map_data/save_map_to_disk
+      type: perception_navigation_msgs/srv/SaveMapToDisk
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/move_base/set_min_spacing
+      type: std_extra_srvs/srv/Float64
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/move_base/set_speed_multiplier
+      type: std_extra_srvs/srv/Float64
+    -
+      service: /cpr_fleet_api/$(optenv CLEARPATH_API_VERSION v1_3)/$(env HOSTNAME_ROS_SANITIZED)/slam/set_initial_pose
+      type: perception_navigation_msgs/srv/SetPose

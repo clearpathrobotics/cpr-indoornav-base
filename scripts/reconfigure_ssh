@@ -1,0 +1,34 @@
+#!/bin/bash
+# Generate SSH keys needed for remote roslaunch
+
+REMOTE_HOST=10.252.252.1
+
+# generate an SSH key that doesn't use a passphrase
+echo "[INFO] Generating passwordless SSH key for use during IndoorNav bringup"
+mkdir -p /home/administrator/.ssh
+chmod 700 /home/administrator/.ssh
+ssh-keygen -b 2048 -t rsa -f /home/administrator/.ssh/id_rsa -q -N "" -m PEM
+echo "[INFO] Saving SSH credentials for backpack at ${REMOTE_HOST}"
+REMOTE_HOSTNAME=$(ssh administrator@${REMOTE_HOST} -oHostKeyAlgorithms='ssh-rsa' 'hostname')
+echo "[INFO] Determined backpack's hostname is $REMOTE_HOSTNAME"
+
+# side-quest to make sure $REMOTE_HOSTNAME is in /etc/hosts
+# match {ip address}{whitespace}{hostname}{whitespace or eol}
+# if the entry doesn't exist in /etc/hosts then append it
+HOSTS_ENTRY=$(cat /etc/hosts | grep -e "^${REMOTE_HOST}\\s\+${REMOTE_HOSTNAME}\\s*$")
+if [ -z "$HOSTS_ENTRY" ];
+then
+  echo "[INFO] Adding entry to resolve $REMOTE_HOST to $REMOTE_HOSTNAME to /etc/hosts"
+  sudo bash -c 'cat >> /etc/hosts' <<EOF
+
+# IndoorNav Backpack PC
+$REMOTE_HOST      $REMOTE_HOSTNAME
+EOF
+else
+  echo "[INFO] Entry in /etc/hosts already exists for $REMOTE_HOSTNAME ($REMOTE_HOST)"
+fi
+
+# resume SSH credentials
+echo "[INFO] Saving SSH credentials for $REMOTE_HOSTNAME"
+ssh administrator@$REMOTE_HOST -oHostKeyAlgorithms='ssh-rsa' 'echo "SSH Credentials saved"'
+ssh-copy-id administrator@${REMOTE_HOST}

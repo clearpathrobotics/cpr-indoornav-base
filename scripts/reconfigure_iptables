@@ -1,0 +1,39 @@
+#!/bin/bash
+# Configures iptables to allow port-forwarding
+# NOTE: there's some indication that port-forwarding causes problems with the ROS2 daemon
+# we recommend leaving iptables unconfigured and using the Apache2 proxy server instead
+# This script is included in case the apparent bug in ROS2 is resolved
+
+REMOTE_HOST=10.252.252.1
+
+# Warn the user that they might not want to run this...
+echo -e "\033[0;41mConfiguring iptables may cause problems with the ROS2 daemon\033[0m"
+echo -e "\033[0;41mWe strongly recommend using the Apache2 proxy server instead\033[0m"
+echo -e "\033[0;41mAre you sure you want to configure iptables? [y/N]\033[0m"
+
+read ANSWER
+if [[ $ANSWER =~ ^[y,Y].* ]];
+then
+  # configure the necessary port-forwarding
+  if ! dpkg -s iptables-persistent &>/dev/null;
+  then
+    # install iptables-persistent non-interactively; we'll need it later
+    echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
+    echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
+    sudo apt-get -y install iptables-persistent
+  fi
+  # enable forwarding in sysctl.conf
+  sudo sed -i 's/^#net.ipv4.ip_forward=.*/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
+  sudo sed -i 's/^net.ipv4.ip_forward=0/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
+  echo "[INFO] Configuring IP Tables to forward ports 2000, 2001, 5000, and 9091 to IndoorNav backpack"
+  sudo sysctl net.ipv4.ip_forward=1
+  sudo iptables --policy FORWARD ACCEPT
+  sudo iptables -t nat -A PREROUTING -p tcp --dport 2000 -j DNAT --to-destination ${REMOTE_HOST}:2000
+  sudo iptables -t nat -A PREROUTING -p tcp --dport 2001 -j DNAT --to-destination ${REMOTE_HOST}:2001
+  sudo iptables -t nat -A PREROUTING -p tcp --dport 5000 -j DNAT --to-destination ${REMOTE_HOST}:5000
+  sudo iptables -t nat -A PREROUTING -p tcp --dport 9091 -j DNAT --to-destination ${REMOTE_HOST}:9091
+  sudo iptables -t nat -A POSTROUTING -j MASQUERADE
+  sudo dpkg-reconfigure iptables-persistent
+else
+  exit 0
+fi

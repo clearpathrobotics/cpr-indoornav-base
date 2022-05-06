@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [ -f /etc/chrony/chrony.conf ];
+then
+  # allow NTP access to the default IndoorNav subnet
+  if [ -z "$(cat /etc/chrony/chrony.conf | grep 'allow 10.252.252/24')" ];
+  then
+    echo "allow 10.252.252/24" | sudo tee -a /etc/chrony/chrony.conf
+  fi
+
+  # allow NTP access to the Otto Motors diagnostic subnet
+  if [ -z "$(cat /etc/chrony/chrony.conf | grep 'allow 10.255.255/24')" ];
+  then
+    echo "allow 10.255.255/24" | sudo tee -a /etc/chrony/chrony.conf
+  fi
+
+  # allow NTP access to the default Clearpath Robotics subnet
+  if [ -z "$(cat /etc/chrony/chrony.conf | grep 'allow 192.168.131/24')" ];
+  then
+    echo "allow 192.168.131/24" | sudo tee -a /etc/chrony/chrony.conf
+  fi
+else
+  echo "[WARN] /etc/chrony/chrony.conf doesn't exist. Skipping chrony configuration"
+fi

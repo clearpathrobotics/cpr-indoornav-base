@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# update /etc/ros/setup.bash with the additional envars
+echo "export HOSTNAME_ROS_SANITIZED=\$(hostname | sed 's/-/_/g')   # use the hostname as a namespace" | sudo tee -a /etc/ros/setup.bash
+echo "export CLEARPATH_API_VERSION=v1_3                            # set the Clearpath API version"   | sudo tee -a /etc/ros/setup.bash

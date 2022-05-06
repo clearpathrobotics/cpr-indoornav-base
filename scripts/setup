@@ -1,0 +1,88 @@
+#!/bin/bash
+# This script is normally installed from the clearpath_iso during installation when the
+# indoornav-backpack option is selected on a supported platform.
+# It is intended to be run on the base-platform PC after ROS has been installed & configured
+# to finish setting up the required communication between the base platform and the backpack
+# Generally you should use the version included in the clearpath_iso, but if you missed
+# enabling that, or are retrofitting a robot, this script may be useful
+
+# IP address of the backpack
+REMOTE_HOST="10.252.252.1"
+
+# Set to 1 to enable port-forwarding with iptables
+# Otherwise we use apache2 to create a proxy server for the web GUI
+USE_IPTABLES=0
+
+prompt_yesNO() {
+  # as the user a y/N question
+  # $1 is the variable into which the answer is saved as either "n" or "y"
+  # $2 is the question to ask
+
+  local __resultvar=$1
+  local __prompt=$2
+
+  echo -e "\e[39m$__prompt\e[0m"
+  echo "y/N: "
+
+  if [[ $AUTO_YES == 1 ]];
+  then
+    echo "Automatically answering No"
+    eval $__resultvar="n"
+  else
+    read answer
+    if [[ $answer =~ ^[y,Y].* ]];
+    then
+      eval $__resultvar="y"
+    else
+      eval $__resultvar="n"
+    fi
+  fi
+}
+
+
+RUN_ME="n"
+prompt_yesNO RUN_ME "\e[94mIs the IndoorNav backpack PC configured, connected, and powered-on?\e[0m"
+
+if [ $RUN_ME = "y" ];
+then
+
+  # make sure we've configured the networking correctly before proceeding
+  echo "[INFO] Making sure we can ping the backpack"
+  if ping -c 1 $REMOTE_HOST > /dev/null;
+  then
+    echo "[ OK ] IndoorNav backpack appears to be online"
+  else
+    echo "[ERR ] Failed to ping the backpack at $REMOTE_HOST. Check your networking and try again"
+    exit 1
+  fi
+
+  # install additional dependencies
+  rosrun cpr_indoornav_base install_depends
+
+  # configure SSH keys
+  rosrun cpr_indoornav_base reconfigure_ssh
+
+  # configure proxy server or iptables
+  # default is proxy server
+  # see https://github.com/ros2/ros2cli/issues/702
+  if [ "$USE_IPTABLES" = "0" ];
+  then
+    rosrun cpr_indoornav_base reconfigure_apache
+  else
+    rosrun cpr_indoornav_base reconfigure_iptables
+  fi
+
+  # ensure NTP access is ok
+  rosrun cpr_indoornav_base reconfigure_chrony
+
+  # add additional envars
+  rosrun cpr_indoornav_base reconfigure_ros_setup
+
+  # patch the ROS2 API
+  rosrun cpr_indoornav_base reconfigure_api
+
+  echo "IndoorNav configuraion complete"
+  echo "You should power-cycle the robot now to ensure all changes are applied correctly"
+else
+  echo -e "\033[0;31mConfigure, connect, and power-on the IndoorNav backpack PC before running this script\033[0m"
+fi # RUN_ME

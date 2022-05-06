@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<!--
+  This launch file is intended to be run on the backpack PC
+-->
+<launch>
+  <arg name="platform"     default="" />
+
+  <node pkg="cpr_indoornav_base" type="start_indoornav" name="$(arg platform)_indoornav_node" args="$(arg platform)" output="screen">
+  </node>
+</launch>

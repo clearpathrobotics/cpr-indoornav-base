@@ -1,0 +1,33 @@
+#!/bin/bash
+# OTTO Motors' 1.3.3 ROS2 API has some known bugs that need to be manually patched.
+# There are no plans to release a fixed .deb of this release, so we need to make a few
+# surgical alterations, specifically to the API examples to get them to build correctly
+
+CLEARPATH_API_VERSION=$(ls -r /opt/clearpath | grep -E "^ros2-api-[0-9]+\.[0-9]+\.[0-9]+$" | head -1 | cut -d- -f3)
+echo "Detected ROS2 API v${CLEARPATH_API_VERSION}"
+
+if [ "${CLEARPATH_API_VERSION}" != "1.3.3" ];
+then
+  echo "No reconfiguration needed"
+  exit 0
+fi
+
+############################################################################################
+## Bug 1: Add float32.hpp to autonomy_api.hpp
+## This will insert directly after `#include <std_msgs/msg/float64.hpp>` in the file
+############################################################################################
+FILE=/opt/clearpath/ros2-api-${CLEARPATH_API_VERSION}/include/clearpath_api/autonomy_api.hpp
+sudo sed -i '/^#include <std_msgs\/msg\/float64.hpp>/a#include <std_msgs\/msg\/float32.hpp>' $FILE
+
+############################################################################################
+## Bug 2: Fix linker errors in the API examples
+############################################################################################
+FILE=/opt/clearpath/ros2-api-${CLEARPATH_API_VERSION}/share/clearpath_api/examples/CMakeLists.txt
+sudo sed -i '/find_package(clearpath_api REQUIRED)/afind_package(perception_navigation_msgs REQUIRED)' $FILE
+sudo sed -i '/find_package(clearpath_api REQUIRED)/afind_package(command_control_msgs REQUIRED)' $FILE
+sudo sed -i '/find_package(clearpath_api REQUIRED)/afind_package(command_control_msgs_utils REQUIRED)' $FILE
+sudo sed -i '/"clearpath_api"/a  "perception_navigation_msgs"' $FILE
+sudo sed -i '/"clearpath_api"/a  "command_control_msgs"' $FILE
+sudo sed -i '/"clearpath_api"/a  "command_control_msgs_utils"' $FILE
+
+echo "ROS2 API reconfiguration complete"

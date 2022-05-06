@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<!--
+  This launch file is used by the cpr-indoornav systemd job to automatically start the autonomy software
+  on the backpack PC.
+  The backpack PC itself runs start_indoornav.launch
+-->
+<launch>
+  <arg name="remote_host"  default="10.252.252.1" />
+  <arg name="remote_user"  default="administrator" />
+  <arg name="platform"     default="" />
+
+  <machine
+    name="backpack"
+    address="$(arg remote_host)"
+    env-loader="/etc/ros/setup-remote.bash"
+    default="true"
+    user="$(arg remote_user)"
+  />
+
+  <node machine="backpack" pkg="cpr_indoornav_base" type="start_navigation" name="$(arg platform)_indoornav_node" args="$(arg platform)" output="screen">
+  </node>
+
+  <node machine="backpack" pkg="cpr_indoornav_base" type="start_api" name="$(arg platform)_indoornav_api_node" args="$(arg platform) $(env HOSTNAME_ROS_SANITIZED)" output="screen">
+  </node>
+
+  <node machine="backpack" pkg="topic_tools" type="relay" name="$(env HOSTNAME_ROS_SANITIZED)_clouds_relay"
+    args="/export/$(env HOSTNAME_ROS_SANITIZED)/clouds/scan_points /export/rocksteady/clouds/scan_points" output="screen">
+  </node>
+
+  <node machine="backpack" pkg="topic_tools" type="relay" name="$(env HOSTNAME_ROS_SANITIZED)_slam_relay"
+    args="/export/$(env HOSTNAME_ROS_SANITIZED)/slam/scan_points /export/rocksteady/slam/scan_points" output="screen">
+  </node>
+</launch>

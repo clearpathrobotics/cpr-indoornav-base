@@ -1,0 +1,13 @@
+#!/bin/bash
+# This script is intended to be run on the autonomy backpack, not on the robot's main PC
+
+# must be one of
+# dingo_d
+# dingo_o
+# husky
+# jackal
+# ridgeback
+ROBOT=$1
+
+# start the indoor autonomy
+roslaunch ${ROBOT}_indoornav navigation.launch

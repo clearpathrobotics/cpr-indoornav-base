@@ -1,0 +1,16 @@
+#!/bin/bash
+# This script is intended to be run on the autonomy backpack, not on the robot's main PC
+
+# must be one of
+# dingo_d
+# dingo_o
+# husky
+# jackal
+# ridgeback
+ROBOT=$1
+
+# hostname of the main robot
+ROBOT_NAME=$(echo $2 | sed 's/-/_/g')
+
+# start the ROS2 API bridge
+roslaunch cpr_base_navigation multimaster.launch robot_name:=${ROBOT_NAME} #robot_model:=${ROBOT}
