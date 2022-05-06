@@ -2,6 +2,10 @@
 Changelog for package cpr_indoornav_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.3.0 (2022-05-06)
+------------------
+* Initial public release
+
 0.2.0 (2022-02-22)
 ------------------
 * Merge branch 'melodic-devel' into noetic-devel
