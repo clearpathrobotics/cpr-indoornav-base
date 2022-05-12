@@ -16,4 +16,7 @@
   <node name="scan_recovery_path__relay" pkg="topic_tools" type="relay" args="/move_base/raw_scan_recovery/path /indoornav/recovery/path"/>
   <node name="current_goal__relay" pkg="topic_tools" type="relay" args="/move_base/current_goal /indoornav/current_goal"/>
 
+  <!-- We can't use a relay to republish /tf to itself, so start a little Python node to ensure tf data
+       from the backpack is visible externally -->
+  <node name="indoornav_tf_republisher" pkg="cpr_indoornav_base" type="tf_republisher" />
 </launch>

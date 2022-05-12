@@ -29,6 +29,9 @@ install(PROGRAMS
   scripts/reconfigure_ros_setup
   scripts/reconfigure_ssh
 
+  # other utilities
+  scripts/tf_republisher
+
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 install(DIRECTORY config launch
