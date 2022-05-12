@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+"""
+Republishes TF data published by the backpack PC so it's visible on external hosts
+
+The tf between the map and odom frames is published by the backpack PC, meaning it's not available
+on any external hosts (e.g. rviz) by default.
+
+This node subscribes to /tf and republishes data with the map frame_id
+"""
+
+import rospy
+from tf2_msgs.msg import TFMessage
+
+def tf_callback(data):
+    """
+    Check if the frame_id is map and republish the transforms if so, but with a mangled
+    sequence ID.
+    """
+    msg_out = TFMessage()
+    msg_out.transforms = []
+
+    for tf in data.transforms:
+        if tf.header.frame_id == 'map' and tf.header.seq == 0:
+            tf.header.seq = 1   # mangle the sequence so we don't republish our own output!
+            msg_out.transforms.append(tf)
+
+    if len(msg_out.transforms) > 0:
+        tf_pub.publish(msg_out)
+
+
+rospy.init_node('indoornav_tf_republisher')
+tf_pub = rospy.Publisher('/tf', TFMessage, queue_size=1)
+tf_sub = rospy.Subscriber('/tf', TFMessage, tf_callback)
+rospy.spin()

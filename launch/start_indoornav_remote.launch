@@ -9,6 +9,8 @@
   <arg name="remote_user"  default="administrator" />
   <arg name="platform"     default="" />
 
+  <include file="$(find cpr_indoornav_base)/launch/relays.launch" />
+
   <machine
     name="backpack"
     address="$(arg remote_host)"

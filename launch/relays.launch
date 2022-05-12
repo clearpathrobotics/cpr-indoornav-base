@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<!--
+  Because the IndoorNav SLAM software runs on a backpack its topics are effectively firewalled
+  behind the robot's main PC.  Add some relays to expose useful topics for use in third-party
+  nodes, Rviz, etc...
+
+  Relayed topics will all appear in the /indoornav namespace
+-->
+<launch>
+  <node name="slam_estimated_pose__relay" pkg="topic_tools" type="relay" args="/slam/estimated_pose /indoornav/estimated_pose"/>
+  <node name="slam_map__relay" pkg="topic_tools" type="relay" args="/slam/map /indoornav/map"/>
+  <node name="slam_planning_map__relay" pkg="topic_tools" type="relay" args="/slam/planning_map /indoornav/planning_map"/>
+  <node name="slam_pose__relay" pkg="topic_tools" type="relay" args="/slam/pose /indoornav/pose"/>
+  <node name="current_path_location__relay" pkg="topic_tools" type="relay" args="/move_base/PathTracker/current_path_location /indoornav/current_path_location"/>
+  <node name="path_progress__relay" pkg="topic_tools" type="relay" args="/move_base/PathTracker/path_progress /indoornav/path_progress"/>
+  <node name="scan_recovery_path__relay" pkg="topic_tools" type="relay" args="/move_base/raw_scan_recovery/path /indoornav/recovery/path"/>
+  <node name="current_goal__relay" pkg="topic_tools" type="relay" args="/move_base/current_goal /indoornav/current_goal"/>
+
+  <!-- We can't use a relay to republish /tf to itself, so start a little Python node to ensure tf data
+       from the backpack is visible externally -->
+  <node name="indoornav_tf_republisher" pkg="cpr_indoornav_base" type="tf_republisher" />
+</launch>
