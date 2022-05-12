@@ -2,6 +2,13 @@
 Changelog for package cpr_indoornav_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add additional relays to expose IndoorNav backpack topics to external hosts
+* Add a simple tf republisher to ensure the tf between map and odom is visible
+  externally
+* Contributors: Chris Iverach-Brereton
+
 0.3.0 (2022-05-06)
 ------------------
 * Initial public release
