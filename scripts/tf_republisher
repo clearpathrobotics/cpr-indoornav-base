@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Republishes TF data published by the backpack PC so it's visible on external hosts
 
