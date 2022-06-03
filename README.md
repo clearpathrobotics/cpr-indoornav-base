@@ -152,11 +152,25 @@ IndoorNav is not supported on Clearpath's outdoor-only platforms, including Wart
 Legacy platforms, such as Boxer 1.0, Husky A100, Grizzly, and Kingfisher are likewise not supported.
 
 
+ROS1 to ROS2 Bridge and API Domains
+------------------------------------
+
+The IndoorNav API is separated into 3 components, each operating on a different ROS2 domain:
+
+| Domain ID | API      | ROS1 Bridge Node   | Topic Namespace     |
+|-----------|----------|--------------------|---------------------|
+| 100       | Fleet    | `fleet_bridge`     | `/cpr_fleet_api`    |
+| 95        | Autonomy | `autonomy_bridge`  | `/cpr_autonomy_api` |
+| 90        | Platform | `platform_bridge`  | `/cpr_platform_api` |
+
+The Platform API is not used for IndoorNav, as it is specific to the OTTO 100 and OTTO 1500.  By default, all
+suppored Clearpath platforms (Jackal, Husky, Ridgeback, and Dingo) will bridge specific ROS1 topics, including
+sensor data, controller inputs, and ``cmd_vel`` into ROS2 on domain ``91``, using the robot's hostname as a
+namespace.
+
+
 Enabling ROS2 to ROS1 Bridge
 ------------------------------
-
-By default specific topics from the base robot are exposed to ROS2 on domain ID 121.  These include sensor data,
-velocity control, battery status, and wireless status.
 
 To enable exposing the ROS2 Fleet and Autonomy API topics to the ROS1 master you must compile ``ros1_bridge`` from
 source.  We recommend using ROS2 Foxy or Galactic.
