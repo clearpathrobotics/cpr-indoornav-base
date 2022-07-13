@@ -223,3 +223,62 @@ sudo systemctl stop cpr-indoornav
 sudo systemctl restart ros
 sudo systemctl start cpr-indoornav
 ```
+
+
+Building the ROS2 API Examples
+-------------------------------
+
+The ROS2 API examples in the published SDK require manual patching to build correctly.
+
+1. Edit `/opt/clearpath/ros2-api-1.3.3/include/clearpath_api/autonomy_api.hpp` to add
+```
+#include <std_msgs/Float32.hpp>
+```
+to the includes at the top of the file
+
+2. Replace `opt/clearpath/ros2-api-1.3.3/share/clearpath_api/examples/CMakeLists.txt` with the following:
+```
+cmake_minimum_required(VERSION 3.5)
+project(clearpath_api_examples)
+
+set(CMAKE_CXX_STANDARD 14)
+add_compile_options(-Wall -Wextra)
+
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
+find_package(clearpath_api REQUIRED)
+find_package(perception_navigation_msgs REQUIRED)
+find_package(command_control_msgs REQUIRED)
+
+ament_package()
+
+add_executable(monitor_odom_intent "src/monitor_odom_intent.cpp")
+
+ament_target_dependencies(monitor_odom_intent
+  "rclcpp"
+  "clearpath_api"
+  "perception_navigation_msgs"
+  )
+
+add_executable(send_move_goal "src/send_move_goal.cpp")
+
+ament_target_dependencies(send_move_goal
+  "rclcpp"
+  "rclcpp_action"
+  "clearpath_api"
+  "command_control_msgs"
+  )
+
+add_executable(get_map_info "src/get_map_info.cpp")
+
+ament_target_dependencies(get_map_info
+  "rclcpp"
+  "clearpath_api"
+  "command_control_msgs"
+  "perception_navigation_msgs"
+  )
+
+install(TARGETS monitor_odom_intent send_move_goal get_map_info DESTINATION lib/${PROJECT_NAME})
+```
+
