@@ -4,7 +4,7 @@
 -->
 <launch>
 
-  <arg name="platform" value=""/>
+  <arg name="platform" default=""/>
 
   <node pkg="launch_delay" type="launch_delay"
     args=" 10 cpr_indoornav_$(arg platform) indoornav_docking_controller.launch platform:=$(arg platform)"
