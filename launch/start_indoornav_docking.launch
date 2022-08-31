@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!--
+  This launch file is intended to be run on the backpack PC
+-->
+<launch>
+
+  <arg name="platform" default=""/>
+
+  <node pkg="launch_delay" type="launch_delay"
+    args=" 10 cpr_indoornav_base indoornav_docking_controller.launch platform:=$(arg platform)"
+    name="docking_controller" output="screen">
+  </node>
+
+  <node pkg="launch_delay" type="launch_delay"
+    args=" 15 cpr_docking_$(arg platform) target_tracker.launch robot_name:=$(arg platform)"
+    name="target_tracker" output="screen">
+  </node>
+
+  <node pkg="launch_delay" type="launch_delay"
+    args=" 18 cpr_docking_$(arg platform) docking_server.launch"
+    name="docking_server" output="screen">
+  </node>
+
+  <node pkg="launch_delay" type="launch_delay"
+    args=" 20 cpr_docking_$(arg platform) target_tracker_client.launch"
+    name="target_tracker_client" output="screen">
+  </node>
+
+  <node pkg="launch_delay" type="launch_delay"
+    args=" 20 cpr_docking_$(arg platform) docking_client.launch"
+    name="docking_client" output="screen">
+  </node>
+
+</launch>
