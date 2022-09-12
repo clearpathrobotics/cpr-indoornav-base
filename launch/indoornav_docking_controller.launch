@@ -19,10 +19,12 @@ express permission of Clearpath Robotics.
   <!-- <env name="ROSCONSOLE_FORMAT" value="[${severity}] [${node}] [${time}]: ${message}"/> -->
 
   <!-- Platform Type -->
-  <arg name="platform" value="" />
+  <arg name="platform" default="" />
 
   <!-- Navigation parameters path -->
-  <arg name="navigation_params_dir" value="$(eval find('cpr_docking_' + arg('platform')) + '/$(arg platform)_gps_navigation/params/$(arg platform)_navigation')" />
+  <arg name="navigation_params_package" value="$(eval find(arg('platform') + '_gps_navigation'))" />
+  <arg name="navigation_params_suffix" value="/params/$(arg platform)_navigation" />
+  <arg name="navigation_params_dir" value="$(arg navigation_params_package)$(arg navigation_params_suffix)" />
 
   <!-- Enable the SICK_LMS 2D lidar (front if only one) -->
   <!-- <arg name="sick_lms" value="$(optenv HUSKY_LMS1XX_ENABLED true)" /> -->
@@ -57,6 +59,7 @@ express permission of Clearpath Robotics.
 
   <!-- <arg name="one_laser" value="$(eval (arg('sick_lms') or arg('hokuyo')) and not (arg('rear_sick_lms') or arg('rear_hokuyo')))" /> -->
   <!-- <arg name="two_laser" value="$(eval (arg('sick_lms') or arg('hokuyo')) and (arg('rear_sick_lms') or arg('rear_hokuyo')))" /> -->
+  <arg name="one_laser" value="false" />
   <arg name="two_laser" value="true" />
 
   <!-- PathTracker -->
