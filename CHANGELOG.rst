@@ -2,8 +2,8 @@
 Changelog for package cpr_indoornav_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.4 (2022-11-24)
+------------------
 * Update docking controller file
 * Add wireless docking support
 * Assume always 2 lasers in indoornav
