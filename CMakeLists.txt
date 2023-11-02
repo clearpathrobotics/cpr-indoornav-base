@@ -3,6 +3,8 @@ project(cpr_indoornav_base)
 
 find_package(catkin REQUIRED)
 
+catkin_python_setup()
+
 catkin_package(
 )
 
