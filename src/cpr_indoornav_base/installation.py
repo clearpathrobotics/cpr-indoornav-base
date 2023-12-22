@@ -72,6 +72,7 @@ def create_indoornav_service(
         launch_files = [
             f'{platform}_indoornav.launch',   # will be renamed! see below
             'safety_stop.launch',
+            'platform_adaptor.launch',
             'power_monitor.launch',
             'indoornav_imu.launch',
             'indoornav_wireless.launch',
