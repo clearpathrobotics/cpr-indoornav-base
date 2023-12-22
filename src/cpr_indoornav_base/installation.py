@@ -40,7 +40,13 @@ do
 done
 """
 
-def create_indoornav_service(platform, local_user="administrator", remote_user="administrator", backpack_ip="192.168.131.9"):
+def create_indoornav_service(
+    platform,
+    local_user="administrator",
+    remote_user="administrator",
+    backpack_ip="10.252.252.1",
+    extra_launch=[]
+):
     """Creates the cpr-indoornav.service systemd job for the given platform
 
     @param platform  A string indicating the supported platform to install. Must be one of
@@ -52,6 +58,8 @@ def create_indoornav_service(platform, local_user="administrator", remote_user="
     @param local_user  The username of the local user that runs the `ros.service` job
     @param remote_user  The username of the ROS user on the IndoorNav computer
     @param backpack_ip  The IP address of the IndoorNav computer
+    @param extra_launch  An optional list of the format [ [pkg1_name, launch_file], [pkg2_name, launch_file], ...]
+                         indicating additional launch files to install as part of the systemd job
     """
     try:
         jobname = 'cpr-indoornav'
@@ -71,6 +79,13 @@ def create_indoornav_service(platform, local_user="administrator", remote_user="
         ]
         for lf in launch_files:
             j.add(package=pkg_name, filename=f'launch/{lf}')
+
+        if extra_launch:
+            for launch in extra_launch:
+                try:
+                    j.add(package=launch[0], filename=launch[1])
+                except Exception as err:
+                    print(f"Failed to add {launch} to job: {err}")
 
         j.install()
 
