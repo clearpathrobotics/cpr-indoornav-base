@@ -112,35 +112,3 @@ EOL'''.format(
 
     except Exception as err:
         print(f"[ERR ] Failed to create cpr-indoornav.service: {err}")
-
-
-def create_docking_service(platform):
-    """Creates the docking.service systemd job, needed for autonomous docking
-    @param platform  A string indicating the supported platform to install. Must be one of
-                     - dingo
-                     - husky
-                     - jackal
-                     - ridgeback
-    """
-    try:
-        jobname = 'docking'
-
-        pkg_name = f'cpr_indoornav_{platform}'
-        launch_files = [
-            f'{platform}_docking.launch'
-        ]
-
-        j = robot_upstart.Job(name=jobname, workspace_setup=os.environ['ROBOT_SETUP'])
-        j.symlink = False
-        j.roslaunch_wait = True
-
-        for lf in launch_files:
-            j.add(package=pkg_name, filename=f'launch/{lf}')
-
-        j.install()
-
-        os.system(f"sudo sed -i '/After/c After=cpr-indoornav.service' /lib/systemd/system/{jobname}.service")
-        os.system(f"sudo sed -i '/After/a PartOf=cpr-indoornav.service' /lib/systemd/system/{jobname}.service")
-
-    except Exception as err:
-        print(f"[ERR ] Failed to create docking.service: {err}")
