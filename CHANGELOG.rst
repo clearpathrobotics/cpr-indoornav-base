@@ -2,6 +2,12 @@
 Changelog for package cpr_indoornav_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Create common installation classes to reduce code duplication in dependent packages
+* Update base package to use Otto's 2.26 release
+* Contributors: Chris Iverach-Brereton
+
 0.3.4 (2022-11-24)
 ------------------
 * Update docking controller file
