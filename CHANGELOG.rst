@@ -2,8 +2,8 @@
 Changelog for package cpr_indoornav_base
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.0 (2024-01-04)
+------------------
 * Create common installation classes to reduce code duplication in dependent packages
 * Update base package to use Otto's 2.26 release
 * Contributors: Chris Iverach-Brereton
